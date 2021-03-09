@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Hello</string>
+    <string name="main_label">Hello</string>
+    <string name="main_input_placeholder">Text</string>
+    <string name="main_button_text">Send</string>
+    <string name="result_button_text">Share</string>
+</resources>
