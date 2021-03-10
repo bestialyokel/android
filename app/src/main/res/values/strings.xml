@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Stopwatch</string>
+    <string name="stop">Стоп</string>
+    <string name="start">Старт</string>
+    <string name="reset">Сброс</string>
+    <string name="time_over">Время вышло</string>
+
+</resources>
