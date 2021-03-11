@@ -17,41 +17,39 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String IS_RUN_KEY = "IsRun";
     private static final String START_TS = "StartTS";
+    private static final String STOP_TS = "StopTS";
 
     private TextView mTimerView = null;
 
-    // обработчик потока - обновляет сведения о времени
-    // Создаётся в основном UI-потоке
     private Handler mHandler = new Handler();
     private boolean isRunning = false;
 
+    private boolean wasRunning = false;
+
     private long startTS = 0;
+    private long stopTS = 0;
 
     private void updateView() {
-        if (!isRunning) {
-            mTimerView.setText("00:00,00");
-            return;
-        }
+        mTimerView.setText("00:00,00");
+    }
 
-        long msElapsed = SystemClock.uptimeMillis() - startTS;
-
+    private void updateView(long msElapsed) {
         byte minutes = (byte) (msElapsed / (60 * 1000));
-
         byte seconds = (byte) ((msElapsed - minutes * 60 * 1000 ) / 1000);
-
         byte ms = (byte) ((msElapsed % 1000) / 10);
-
         String text = String.format("%02d" , minutes) + ":" + String.format("%02d" , seconds) + "," + String.format("%02d" , ms);
-
         mTimerView.setText(text);
-
     }
 
     private void startTimer() {
+        long now = SystemClock.elapsedRealtime();
+        if (startTS == 0)
+            startTS = now;
 
-        if (startTS == 0) {
-            startTS = SystemClock.uptimeMillis();
-        }
+        if (stopTS == 0)
+            stopTS = now;
+
+        startTS = now - (stopTS - startTS);
 
         isRunning = true;
         mHandler.post(timerRunnable);
@@ -59,38 +57,59 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopTimer() {
         isRunning = false;
+        stopTS = SystemClock.elapsedRealtime();
         mHandler.removeCallbacks(timerRunnable);
     }
 
     private void resetTimer() {
         startTS = 0;
-        stopTimer();
+        stopTS = 0;
+        isRunning = false;
+        mHandler.removeCallbacks(timerRunnable);
     }
 
     public void startHandler(View v) {
+        if (isRunning)
+            return;
         startTimer();
     }
     public void stopHandler(View v) {
+        if (!isRunning)
+            return;
         stopTimer();
     }
     public void resetHandler(View v) {
+        if (startTS == 0 && stopTS == 0)
+            return;
+
         resetTimer();
         updateView();
     }
 
     private Runnable timerRunnable = new Runnable() {
         public void run() {
-            updateView();
-            mHandler.postDelayed(this, 10);
+            long msElapsed = SystemClock.elapsedRealtime() - startTS;
+            updateView(msElapsed);
+            mHandler.postDelayed(this, 25);
         }
     };
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onStop() {
+        super.onStop();
+        if (isRunning) {
+            wasRunning = true;
+            stopTimer();
+        }
+    }
 
-        outState.putLong(START_TS, startTS);
-        outState.putBoolean(IS_RUN_KEY, isRunning);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (wasRunning) {
+            startTimer();
+            wasRunning = false;
+        };
     }
 
     @Override
@@ -98,12 +117,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTimerView = (TextView) findViewById(R.id.timer_view);
+        mTimerView = findViewById(R.id.timer_view);
+    }
 
-        if (savedInstanceState != null) {
-            isRunning = savedInstanceState.getBoolean(IS_RUN_KEY);
-            startTS = savedInstanceState.getLong(START_TS);
-        }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
 
+        outState.putLong(START_TS, startTS);
+        outState.putBoolean(IS_RUN_KEY, isRunning);
+        outState.putLong(STOP_TS, stopTS);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        isRunning = savedInstanceState.getBoolean(IS_RUN_KEY);
+        startTS = savedInstanceState.getLong(START_TS);
+        stopTS = savedInstanceState.getLong(STOP_TS, stopTS);
     }
 }
