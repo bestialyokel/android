@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_book_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/cardview_default_radius"
+    android:paddingLeft="@dimen/cardview_default_radius"
+    android:paddingRight="@dimen/cardview_default_radius"
+    android:paddingTop="@dimen/cardview_default_radius"
+    tools:context="com.example.lab4.BookDetailsActivity"
+    android:orientation="vertical"
+    >
+
+</androidx.constraintlayout.widget.ConstraintLayout>

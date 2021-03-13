@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_book_detail"
+    tools:context="com.example.lab4.BookDetailsFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:id="@+id/name_text_view"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:text="Имя"
+            android:textSize="24sp"
+            android:paddingBottom="5dp" />
+
+        <TextView
+            android:id="@+id/description_text_view"
+            android:layout_below="@+id/name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Описание"
+            android:textSize="18sp"
+            android:paddingBottom="20dp" />
+
+        <TextView
+            android:id="@+id/price_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description_text_view"
+            android:layout_margin="5dp"
+            android:paddingBottom="20dp"
+            android:text="Описание"
+            android:textColor="@color/purple_500"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/book_details_add" />
+
+        <Button
+            android:id="@+id/remove_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/book_details_remove" />
+
+
+    </LinearLayout>
+</FrameLayout>
