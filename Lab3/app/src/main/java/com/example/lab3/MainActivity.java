@@ -16,6 +16,7 @@ import java.lang.Runnable;
 public class MainActivity extends AppCompatActivity {
 
     private static final String IS_RUN_KEY = "IsRun";
+    private static final String WAS_RUN = "WasRun";
     private static final String START_TS = "StartTS";
     private static final String STOP_TS = "StopTS";
 
@@ -23,15 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
     private boolean isRunning = false;
-
     private boolean wasRunning = false;
 
     private long startTS = 0;
     private long stopTS = 0;
-
-    private void updateView() {
-        mTimerView.setText("00:00,00");
-    }
 
     private void updateView(long msElapsed) {
         byte minutes = (byte) (msElapsed / (60 * 1000));
@@ -49,22 +45,24 @@ public class MainActivity extends AppCompatActivity {
         if (stopTS == 0)
             stopTS = now;
 
+        isRunning = true;
         startTS = now - (stopTS - startTS);
 
-        isRunning = true;
         mHandler.post(timerRunnable);
     }
 
     private void stopTimer() {
         isRunning = false;
         stopTS = SystemClock.elapsedRealtime();
+
         mHandler.removeCallbacks(timerRunnable);
     }
 
     private void resetTimer() {
+        isRunning = false;
         startTS = 0;
         stopTS = 0;
-        isRunning = false;
+
         mHandler.removeCallbacks(timerRunnable);
     }
 
@@ -83,11 +81,14 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         resetTimer();
-        updateView();
+        updateView(0);
     }
 
     private Runnable timerRunnable = new Runnable() {
         public void run() {
+            if (!isRunning)
+                return;
+
             long msElapsed = SystemClock.elapsedRealtime() - startTS;
             updateView(msElapsed);
             mHandler.postDelayed(this, 25);
@@ -95,17 +96,19 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (isRunning) {
             wasRunning = true;
             stopTimer();
         }
+
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        updateView(stopTS - startTS);
         if (wasRunning) {
             startTimer();
             wasRunning = false;
@@ -121,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
         outState.putLong(START_TS, startTS);
-        outState.putBoolean(IS_RUN_KEY, isRunning);
+        outState.putBoolean(WAS_RUN, wasRunning);
         outState.putLong(STOP_TS, stopTS);
     }
 
@@ -133,8 +136,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        isRunning = savedInstanceState.getBoolean(IS_RUN_KEY);
+        wasRunning = savedInstanceState.getBoolean(WAS_RUN);
         startTS = savedInstanceState.getLong(START_TS);
         stopTS = savedInstanceState.getLong(STOP_TS, stopTS);
+
     }
 }
