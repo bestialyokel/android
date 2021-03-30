@@ -53,17 +53,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopTimer() {
         isRunning = false;
-        stopTS = SystemClock.elapsedRealtime();
-
         mHandler.removeCallbacks(timerRunnable);
+
+        stopTS = SystemClock.elapsedRealtime();
     }
 
     private void resetTimer() {
         isRunning = false;
+        mHandler.removeCallbacks(timerRunnable);
+
         startTS = 0;
         stopTS = 0;
-
-        mHandler.removeCallbacks(timerRunnable);
     }
 
     public void startHandler(View v) {
@@ -107,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
-        updateView(stopTS - startTS);
+        super.onResume();;
         if (wasRunning) {
             startTimer();
             wasRunning = false;
@@ -139,6 +138,5 @@ public class MainActivity extends AppCompatActivity {
         wasRunning = savedInstanceState.getBoolean(WAS_RUN);
         startTS = savedInstanceState.getLong(START_TS);
         stopTS = savedInstanceState.getLong(STOP_TS, stopTS);
-
     }
 }

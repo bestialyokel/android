@@ -41,8 +41,15 @@ public class MainActivity extends AppCompatActivity {
         mAddButton.setOnClickListener(v -> {
                 Intent intent = new Intent(this, CalculatingActivity.class);
                 Bundle bundle = new Bundle();
-                double arg1 = Double.valueOf(mNum1.getText().toString());
-                double arg2 = Double.valueOf(mNum2.getText().toString());
+                String num1 = mNum1.getText().toString();
+                String num2 = mNum2.getText().toString();
+
+                if (num1.isEmpty() || num2.isEmpty()) {
+                    return;
+                }
+
+                double arg1 = Double.valueOf(num1);
+                double arg2 = Double.valueOf(num2);
                 bundle.putDouble(CalculatingActivity.ARG1, arg1);
                 bundle.putDouble(CalculatingActivity.ARG2, arg2);
                 bundle.putString(CalculatingActivity.OP_CODE, CalculatingActivity.ADD);
@@ -53,8 +60,15 @@ public class MainActivity extends AppCompatActivity {
         mSubButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, CalculatingActivity.class);
             Bundle bundle = new Bundle();
-            double arg1 = Double.valueOf(mNum1.getText().toString());
-            double arg2 = Double.valueOf(mNum2.getText().toString());
+            String num1 = mNum1.getText().toString();
+            String num2 = mNum2.getText().toString();
+
+            if (num1.isEmpty() || num2.isEmpty()) {
+                return;
+            }
+
+            double arg1 = Double.valueOf(num1);
+            double arg2 = Double.valueOf(num2);
             bundle.putDouble(CalculatingActivity.ARG1, arg1);
             bundle.putDouble(CalculatingActivity.ARG2, arg2);
             bundle.putString(CalculatingActivity.OP_CODE, CalculatingActivity.SUB);
