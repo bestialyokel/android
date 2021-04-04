@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.lang.Runnable;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
     private boolean isRunning = false;
+    
     private boolean wasRunning = false;
 
     private long startTS = 0;
@@ -72,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
         startTimer();
     }
     public void stopHandler(View v) {
-        if (!isRunning)
+        if (!isRunning) {
             return;
+        }
         stopTimer();
     }
     public void resetHandler(View v) {
@@ -138,5 +141,6 @@ public class MainActivity extends AppCompatActivity {
         wasRunning = savedInstanceState.getBoolean(WAS_RUN);
         startTS = savedInstanceState.getLong(START_TS);
         stopTS = savedInstanceState.getLong(STOP_TS, stopTS);
+        updateView(stopTS - startTS);
     }
 }
