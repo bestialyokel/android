@@ -60,6 +60,7 @@ public class PageFragment extends Fragment {
         this.mText = view.findViewById(R.id.text);
         this.mText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         this.mText.setIncludeFontPadding(false);
+        this.mText.setLineHeight(mSpacing);
         return view;
     }
 
