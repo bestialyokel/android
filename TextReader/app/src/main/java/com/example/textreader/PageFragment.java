@@ -1,6 +1,5 @@
 package com.example.textreader;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,13 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Type;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PageFragment extends Fragment {
 
     public static String DATA = "page_data";
@@ -67,7 +59,6 @@ public class PageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         this.mText.setText(this.mData);
     }
 }

@@ -1,29 +1,20 @@
 package com.example.textreader;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static int OPEN_DIRECTORY_REQUEST_CODE = 1;
-
-    private boolean firstLaunch = true;
-
     private Button mChoose;
 
     @Override

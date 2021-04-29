@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:includeFontPadding="false"
         android:inputType="textMultiLine"
+        android:breakStrategy="simple"
         android:lineSpacingExtra="0px"
         android:lineSpacingMultiplier="0"
         android:text="stubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubststubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubstubфstubstubstubstubstubststubstubstubstubststubstubstubstubststubstubstubstubststubstubstubstubststubstubstubstффtффubstффtффubstффtффubstффtффubstффtффubstффtффubstффtффubstффtффssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssssssфssss"
