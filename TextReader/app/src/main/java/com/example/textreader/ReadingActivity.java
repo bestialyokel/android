@@ -15,6 +15,8 @@ public class ReadingActivity extends AppCompatActivity {
     public static String DATA = "data";
     public static int TEXT_SIZE = 64;
     public static int SPACING = TEXT_SIZE;
+    public static double LETTER_WIDTH = 38.5;
+
     ViewPager2 mPager;
     PageFragmentStateAdapter mAdapter;
     Toast pageToast;
@@ -29,17 +31,15 @@ public class ReadingActivity extends AppCompatActivity {
         public double yPixels;
     }
 
-    //я хз
     private ScreenSize getDimension() {
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        // status bar height
-        int statusBarHeight = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
-        int height = (int) (Resources.getSystem().getDisplayMetrics().heightPixels) - statusBarHeight;
+        int height = (Resources.getSystem().getDisplayMetrics().heightPixels);
         return new ScreenSize(width, height);
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        // super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -56,8 +56,9 @@ public class ReadingActivity extends AppCompatActivity {
         }
 
         mPager = findViewById(R.id.pager);
+        mPager.invalidate();
+        mPager.refreshDrawableState();
         mAdapter = new PageFragmentStateAdapter(this, TEXT_SIZE, SPACING);
-
         mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -79,9 +80,7 @@ public class ReadingActivity extends AppCompatActivity {
     private List<String> splitString(String data, ScreenSize size) {
         List<String> pages = new ArrayList<>();
 
-        double mul = Math.sqrt(2) * 1.175;
-
-        final int MAX_LINE_LETTERS = (int) (size.xPixels / TEXT_SIZE * mul);
+        final int MAX_LINE_LETTERS = (int) (size.xPixels / LETTER_WIDTH);
         final int MAX_LINES = (int) (size.yPixels / SPACING);
 
         StringBuilder pageBuf = new StringBuilder();
